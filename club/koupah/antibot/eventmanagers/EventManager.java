@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -37,7 +38,7 @@ public class EventManager implements Listener {
 		suspects.get(event.getPlayer()).setInteracted(true);
 		}
 		} catch (Exception e) {
-			Main.out("Player interacted but doesn't have a PossibleBot constructor!");
+			Main.out("Player \"" + event.getPlayer().getName() + "\" doesn't have a PossibleBot constructor!");
 		}
 	}
 	
@@ -50,7 +51,8 @@ public class EventManager implements Listener {
 		suspects.get(event.getDamager()).setInteracted(true);
 		}
 		} catch (Exception e) {
-			Main.out("Player interacted but doesn't have a PossibleBot constructor!");
+			if (event.getDamager() instanceof Player)
+			Main.out("Player \"" + ((Player)event.getDamager()).getName() + "\" doesn't have a PossibleBot constructor!");
 		}
 	}
 	
@@ -62,11 +64,21 @@ public class EventManager implements Listener {
 		suspects.get(event.getPlayer()).setChatted(true);
 		}
 		} catch (Exception e) {
-			Main.out("Player interacted but doesn't have a PossibleBot constructor!");
+			Main.out("Player \"" + event.getPlayer().getName() + "\" doesn't have a PossibleBot constructor!");
 		}
 	}
 	
-
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onMessage(AsyncPlayerChatEvent event) {
+		try {
+		if (!suspects.get(event.getPlayer()).hasChatted()) {
+		suspects.get(event.getPlayer()).addGoodFlags(1);
+		suspects.get(event.getPlayer()).setChatted(true);
+		}
+		} catch (Exception e) {
+			Main.out("Player \"" + event.getPlayer().getName() + "\" doesn't have a PossibleBot constructor!");
+		}
+	}
 
 
 }

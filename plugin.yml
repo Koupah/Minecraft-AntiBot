@@ -1,10 +1,10 @@
 name: AntiBot
 version: 1.0
-main: club.koupah.antibot
+main: club.koupah.antibot.Main
 description: AntiBot
 
 commands:
-   lockdown:
+   antibotlockdown:
       usage: /lockdown on/off
    antibotcredit:
       usage: /antibotcredit

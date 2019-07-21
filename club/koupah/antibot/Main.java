@@ -9,8 +9,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import club.koupah.antibot.commands.AntiBotCredit;
-import club.koupah.antibot.commands.LockdownCommand;
+import club.koupah.antibot.commands.AntiBotCreditCommand;
+import club.koupah.antibot.commands.AntiBotLockdownCommand;
 import club.koupah.antibot.constructors.PossibleBot;
 import club.koupah.antibot.eventmanagers.EventManager;
 
@@ -28,10 +28,10 @@ public class Main extends JavaPlugin {
 	
 	public void onEnable() {
 		server = getServer();
-		getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "\n\nKoupah's Plugin has been enabled!\n");
+		getServer().getConsoleSender().sendMessage(ChatColor.GREEN+ "\n\nKoupah's AntiBot has been enabled!\n");
 		getServer().getPluginManager().registerEvents(new EventManager(), this);	
-		getCommand("lockdown").setExecutor((CommandExecutor)new LockdownCommand());
-		getCommand("antibotcredit").setExecutor((CommandExecutor)new AntiBotCredit());
+		getCommand("antibotlockdown").setExecutor((CommandExecutor)new AntiBotLockdownCommand());
+		getCommand("antibotcredit").setExecutor((CommandExecutor)new AntiBotCreditCommand());
 		
 		
 		getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
