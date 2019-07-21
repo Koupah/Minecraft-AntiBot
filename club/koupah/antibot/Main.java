@@ -57,7 +57,8 @@ public class Main extends JavaPlugin {
 		    			//Check flags
 		    			if (entry.getValue().getFlags() >= Main.lockdownFlags) {
 		    				entry.getValue().setBanned(true);
-		    				getServer().dispatchCommand(getServer().getConsoleSender(), "ban " + entry.getKey() + " 10m AntiBot (LOCKDOWN MODE) -s");
+		    				//Ban player (Litebans format)
+		    				getServer().dispatchCommand(getServer().getConsoleSender(), "ban " + entry.getKey().getName() + " 10m AntiBot (LOCKDOWN MODE) -s");
 			    			out(ChatColor.AQUA+"(AntiBot) " + ChatColor.RED + "Banned " + ChatColor.GREEN + entry.getKey() + ChatColor.RED + " for having " + entry.getValue().getFlags() + " flags ( >= " + Main.maxFlags + ")");
 			    		}	
 		    			
