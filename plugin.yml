@@ -1,0 +1,10 @@
+name: AntiBot
+version: 1.0
+main: club.koupah.antibot
+description: AntiBot
+
+commands:
+   lockdown:
+      usage: /lockdown on/off
+   antibotcredit:
+      usage: /antibotcredit
