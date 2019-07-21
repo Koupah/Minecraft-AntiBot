@@ -6,6 +6,8 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import club.koupah.antibot.Main;
+
 public class PossibleBot {
 
 	ArrayList<Integer> pings = new ArrayList<Integer>();
@@ -130,12 +132,16 @@ public class PossibleBot {
 			return false;
 		
 		int count = 0;
-		while (count <= inARow)
+		
 		for (Integer integer : getPingTimes()) {
+			count++;
 			if (integer < maxPing)
 				return false;
+		
+			if (count >= inARow)
+				return true;
 		}
-		return true;
+		return false;
 	}
 	
 	public void resetPingTimes() {
@@ -148,12 +154,18 @@ public class PossibleBot {
 			return false;
 		
 		int count = 0;
-		while (count <= maxViolations)
+		
 		for (Integer integer : getPingTimes()) {
+			count++;
 			if (integer != 0)
 				return false;
-		}
-		return true;
+
+
+			if (count >= maxViolations)
+				return true;
+			}
+		
+		return false;
 	}
 
 	public void setIgnore(boolean b) {

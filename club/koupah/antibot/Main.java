@@ -45,7 +45,7 @@ public class Main extends JavaPlugin {
 		    		
 		    		
 		    		//Reset their ping times every 20 seconds
-		    		if (entry.getValue().getPingTimes().size() > 20)
+		    		if (entry.getValue().getPingTimes().size() >= 20)
 		    			entry.getValue().resetPingTimes();
 		    		
 		    		//Add their ping to ping arraylist (this happens once a second)
@@ -59,7 +59,7 @@ public class Main extends JavaPlugin {
 		    				entry.getValue().setBanned(true);
 		    				//Ban player (Litebans format)
 		    				getServer().dispatchCommand(getServer().getConsoleSender(), "ban " + entry.getKey().getName() + " 10m AntiBot (LOCKDOWN MODE) -s");
-			    			out(ChatColor.AQUA+"(AntiBot) " + ChatColor.RED + "Banned " + ChatColor.GREEN + entry.getKey() + ChatColor.RED + " for having " + entry.getValue().getFlags() + " flags ( >= " + Main.maxFlags + ")");
+			    			out(ChatColor.AQUA+"(AntiBot) " + ChatColor.RED + "Banned " + ChatColor.GREEN + entry.getKey().getName() + ChatColor.RED + " for having " + entry.getValue().getFlags() + " flags ( >= " + Main.lockdownFlags + ")");
 			    		}	
 		    			
 		    			//If they have been facing the same way as they did when they logged in for more than 20 seconds
@@ -77,7 +77,7 @@ public class Main extends JavaPlugin {
 			    		}
 		    			
 		    			//Has interacted (if they haven't interacted in 20 seconds)
-		    			if (!entry.getValue().hasInteracted() && entry.getValue().getSecondsSinceLogin() >= 30) {
+		    			if (!entry.getValue().hasInteracted() && entry.getValue().getSecondsSinceLogin() >= 30 && (!entry.getValue().hasMoved(entry.getKey().getLocation()) || !entry.getValue().hasFacingChanged(entry.getKey().getLocation()))) {
 		    				entry.getValue().addFlags(1);
 		    				//Set to true to stop this from flagging again
 		    				entry.getValue().setInteracted(true);
@@ -90,15 +90,15 @@ public class Main extends JavaPlugin {
 		    				entry.getValue().setChatTime(-1);
 		    			}
 		    			
-		    			//0 ping 8 seconds in a row
-		    			if (entry.getValue().isInvalidPing(8)) {
+		    			//0 ping 4 seconds in a row
+		    			if (entry.getValue().isInvalidPing(4)) {
 		    				entry.getValue().addFlags(2);
 		    				entry.getValue().resetPingTimes();
 		    			}
 		    			
 		    			//750+ ping 8 seconds in a row
-		    			if (entry.getValue().shouldPingKick(750, 8)) {
-		    				entry.getValue().addFlags(2);
+		    			if (entry.getValue().shouldPingKick(0, 8)) {
+		    				entry.getValue().addFlags(6);
 		    				entry.getValue().resetPingTimes();
 		    			}
 		    			
@@ -106,8 +106,8 @@ public class Main extends JavaPlugin {
 		    		} else {
 		    			if (entry.getValue().getFlags() >= Main.maxFlags ) {
 		    				entry.getValue().setBanned(true);
-		    				getServer().dispatchCommand(getServer().getConsoleSender(), "ban " + entry.getKey() + " 10m AntiBot -s");
-			    			out(ChatColor.AQUA+"(AntiBot) " + ChatColor.RED + "Banned " + ChatColor.GREEN + entry.getKey() + ChatColor.RED + " for having " + entry.getValue().getFlags() + " flags ( >= " + Main.maxFlags + ")");
+		    				getServer().dispatchCommand(getServer().getConsoleSender(), "ban " + entry.getKey().getName() + " 10m AntiBot -s");
+			    			out(ChatColor.AQUA+"(AntiBot) " + ChatColor.RED + "Banned " + ChatColor.GREEN + entry.getKey().getName() + ChatColor.RED + " for having " + entry.getValue().getFlags() + " flags ( >= " + Main.maxFlags + ")");
 			    		}
 		    			
 		    			if (entry.getValue().isInvalidPing(8)) {
@@ -126,9 +126,7 @@ public class Main extends JavaPlugin {
 		    			entry.getValue().setIgnore(true);
 		    		}
 		    		
-		    	
-		    		
-		    		
+		    
 		    	}
 		    }
 		}, 0L, 20L); 
